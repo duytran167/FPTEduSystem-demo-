@@ -9,7 +9,8 @@ using System.Web.Mvc;
 
 namespace FPTSystem.Controllers
 {
-    public class AdminController : Controller
+  [Authorize(Roles = "admin")]
+  public class AdminController : Controller
     { 
     private ApplicationUser _user;
     private ApplicationDbContext _context;
