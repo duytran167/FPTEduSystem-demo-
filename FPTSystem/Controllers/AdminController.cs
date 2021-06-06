@@ -36,6 +36,7 @@ namespace FPTSystem.Controllers
       var trainer = _context.Users.Where(t => t.Roles.Any(m => m.RoleId == "3")).ToList();
       return View(trainer);
     }
+    //delete User
     public ActionResult Delete(string id)
     {
       var removeUser = _context.Users.SingleOrDefault(t => t.Id == id);
