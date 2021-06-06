@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using FPTSystem.Models;
+using System.Collections.Generic;
 
 namespace FPTSystem.Controllers
 {
@@ -134,47 +135,105 @@ namespace FPTSystem.Controllers
             }
         }
 
-        //
-        // GET: /Account/Register
-        [AllowAnonymous]
-        public ActionResult Register()
+    //
+    // GET: /Account/Register
+    [Authorize(Roles = "admin,staff")]
+    public ActionResult Register()
+    {
+      if (User.IsInRole("admin"))
+      {
+        var register = new RegisterViewModel() { Roles = new List<string>() { "Staff", "Trainer" } };
+        return View(register);
+      }
+      return View();
+    }
+
+    //
+    // POST: /Account/Register
+    [HttpPost]
+    [Authorize(Roles = "admin,staff")]
+    [ValidateAntiForgeryToken]
+    public async Task<ActionResult> Register(RegisterViewModel model)
+    {
+      if (User.IsInRole("admin"))
+      {
+        if (model.RoleName == "Staff")
         {
-            return View();
-        }
+          var user = new Staff() { UserName = model.Email, Email = model.Email };
+          var result = await UserManager.CreateAsync(user, model.Password);
+          if (result.Succeeded)
+          {
+            result = await UserManager.AddToRoleAsync(user.Id, model.RoleName);
+            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-        //
-        // POST: /Account/Register
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+            // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+            // Send an email with this link
+            // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+            // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+            // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+            return RedirectToAction("Index", "Admin");
+          }
+          AddErrors(result);
+        }
+        if (model.RoleName == "Trainer")
         {
-            if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+          var user = new Trainer() { UserName = model.Email, Email = model.Email };
+          var result = await UserManager.CreateAsync(user, model.Password);
+          if (result.Succeeded)
+          {
+            result = await UserManager.AddToRoleAsync(user.Id, model.RoleName);
+            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                    return RedirectToAction("Index", "Home");
-                }
-                AddErrors(result);
-            }
+            // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+            // Send an email with this link
+            // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+            // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+            // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            return RedirectToAction("Index", "Admin");
+          }
+          AddErrors(result);
         }
+      }
 
-        //
-        // GET: /Account/ConfirmEmail
-        [AllowAnonymous]
+      if (User.IsInRole("staff"))
+      {
+        var user = new Trainee()
+        {
+          UserName = model.Email,
+          Email = model.Email,
+          Age = model.Trainee.Age,
+          DateofBirth = model.Trainee.DateofBirth,
+          Education = model.Trainee.Education,
+          MainProgrammingLang = model.Trainee.MainProgrammingLang,
+          ToeicScore = model.Trainee.ToeicScore,
+          ExpDetail = model.Trainee.ExpDetail,
+          Location = model.Trainee.Location,
+          Department = model.Trainee.Department
+        };
+        var result = await UserManager.CreateAsync(user, model.Password);
+        if (result.Succeeded)
+        {
+          result = await UserManager.AddToRoleAsync(user.Id, "trainee");
+
+
+          // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+          // Send an email with this link
+          // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+          // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+          // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+          return RedirectToAction("TraineeManagement", "Staff");
+        }
+        AddErrors(result);
+      }
+      // If we got this far, something failed, redisplay form
+      return View(model);
+    }
+    //
+    // GET: /Account/ConfirmEmail
+    [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
             if (userId == null || code == null)
