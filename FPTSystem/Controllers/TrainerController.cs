@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -57,6 +58,16 @@ namespace FPTSystem.Controllers
       trainer.Type = detailsTrainer.Type;
       _context.SaveChanges();
       return RedirectToAction("Index", "Trainer");
+    }
+    public ActionResult CourseAssign()
+    {
+      var ftrainerId = User.Identity.GetUserId();
+      var courseAssign = _context.TrainerCourses
+          .Where(t => t.TrainerId == ftrainerId)
+          .Select(t => t.Course)
+          .Include(t => t.Category)
+          .ToList();
+      return View(courseAssign);
     }
   }
 }
