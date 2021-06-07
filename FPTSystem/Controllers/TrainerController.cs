@@ -29,5 +29,34 @@ namespace FPTSystem.Controllers
       var trainer = _context.Users.OfType<Trainer>().SingleOrDefault(t => t.Id == ftrainerId);
       return View(trainer);
     }
+    public ActionResult EditTrainer()
+    {
+      var ftrainerId = User.Identity.GetUserId();
+      var trainer = _context.Users.OfType<Trainer>().SingleOrDefault(t => t.Id == ftrainerId);
+      var updateTrainerView = new Trainer()
+      {
+        Id = trainer.Id,
+        Email = trainer.Email,
+        UserName = trainer.UserName,
+        Education = trainer.Education,
+        WorkPlace = trainer.WorkPlace,
+        Telephone = trainer.Telephone,
+        Type = trainer.Type
+      };
+      return View(updateTrainerView);
     }
+    [HttpPost]
+    public ActionResult EditTrainer(Trainer detailsTrainer)
+    {
+      var ftrainerId = User.Identity.GetUserId();
+      var trainer = _context.Users.OfType<Trainer>().SingleOrDefault(t => t.Id == ftrainerId);
+      trainer.UserName = detailsTrainer.UserName;
+      trainer.Education = detailsTrainer.Education;
+      trainer.WorkPlace = detailsTrainer.WorkPlace;
+      trainer.Telephone = detailsTrainer.Telephone;
+      trainer.Type = detailsTrainer.Type;
+      _context.SaveChanges();
+      return RedirectToAction("Index", "Trainer");
+    }
+  }
 }
