@@ -1,0 +1,18 @@
+﻿@model IEnumerable<FPTSystem.Models.ApplicationUser>
+@{
+	ViewBag.Title = "TraineeManagement";
+}
+
+<h2>Trainee Management</h2>
+
+@Html.ActionLink("Back", "Index", "Staff", null, new { @class = "btn btn-primary" })
+@using (Html.BeginForm("TraineeManagement", "Staff", "POST"))
+{
+	<div class="form-group">
+		@Html.Label("Search")
+		@Html.TextBox("searchString", null, new { @class = "form-control" })
+		<button type="submit" class="btn btn-primary">Search</button>
+	</div>
+}
+@Html.ActionLink("Create a new account", "Register", "Account", null, new { @class = "btn btn-default" })
+

@@ -28,5 +28,17 @@ namespace FPTSystem.Controllers
         {
             return View();
         }
+    public ActionResult TraineeManagement(string searchString)
+    {
+
+      var trainee = _context.Users.Where(t => t.Roles.Any(r => r.RoleId == "4")).ToList();
+      if (!String.IsNullOrEmpty(searchString))
+      {
+        trainee = _context.Users
+            .Where(t => t.Roles.Any(r => r.RoleId == "4") && t.UserName.Contains(searchString) == true)
+            .ToList();
+      }
+      return View(trainee);
     }
+  }
 }
