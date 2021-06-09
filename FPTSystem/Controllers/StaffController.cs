@@ -91,6 +91,54 @@ namespace FPTSystem.Controllers
       var trainee = _context.Users.SingleOrDefault(t => t.Id == id);
       return View(trainee);
     }
+    public ActionResult TrainerManagement(string searchString)
+    {
+
+      var trainer = _context.Users.Where(t => t.Roles.Any(r => r.RoleId == "3")).ToList();
+      if (!String.IsNullOrEmpty(searchString))
+      {
+        trainer = _context.Users
+            .Where(t => t.Roles.Any(r => r.RoleId == "3") && t.UserName.Contains(searchString) == true)
+            .ToList();
+      }
+      return View(trainer);
+    }
+    [HttpGet]
+    public ActionResult UpdateTrainer(string id)
+    {
+      var trainer = _context.Users
+               .OfType<Trainer>()
+               .SingleOrDefault(t => t.Id == id);
+      var updateTrainer = new Trainer()
+      {
+        Id = trainer.Id,
+        Email = trainer.Email,
+        UserName = trainer.UserName,
+        Education = trainer.Education,
+        WorkPlace = trainer.WorkPlace,
+        Telephone = trainer.Telephone,
+        Type = trainer.Type
+
+      };
+      return View(updateTrainer);
+    }
+    [HttpPost]
+    public ActionResult UpdateTrainer(Trainer detailsTrainer)
+    {
+      var traineesearch = _context.Users.OfType<Trainer>().FirstOrDefault(t => t.Id == detailsTrainer.Id);
+      traineesearch.UserName = detailsTrainer.UserName;
+      traineesearch.Education = detailsTrainer.Education;
+      traineesearch.WorkPlace = detailsTrainer.WorkPlace;
+      traineesearch.Telephone = detailsTrainer.Telephone;
+      traineesearch.Type = detailsTrainer.Type;
+      _context.SaveChanges();
+      return RedirectToAction("TraineeManagement");
+    }
+    public ActionResult DetailsTrainer(string id)
+    {
+      var trainer = _context.Users.SingleOrDefault(t => t.Id == id);
+      return View(trainer);
+    }
 
   }
 }
