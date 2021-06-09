@@ -40,5 +40,57 @@ namespace FPTSystem.Controllers
       }
       return View(trainee);
     }
+    public ActionResult DeleteTrainee(string id)
+    {
+      var removeTrainee = _context.Users.SingleOrDefault(t => t.Id == id);
+      _context.Users.Remove(removeTrainee);
+      _context.SaveChanges();
+      return RedirectToAction("TraineeManagement");
+    }
+    [HttpGet]
+    public ActionResult UpdateTrainee (string id)
+		{
+      var trainee = _context.Users
+               .OfType<Trainee>()
+               .SingleOrDefault(t => t.Id == id);
+      var updateTrainee = new Trainee()
+      {
+        Id = trainee.Id,
+        Email = trainee.Email,
+        UserName = trainee.UserName,
+        Age = trainee.Age,
+        DateofBirth = trainee.DateofBirth,
+        Education = trainee.Education,
+        MainProgrammingLang = trainee.MainProgrammingLang,
+        ToeicScore = trainee.ToeicScore,
+        ExpDetail = trainee.ExpDetail,
+        Department = trainee.Department,
+        Location = trainee.Location
+
+      };
+      return View(updateTrainee);
+    }
+    [HttpPost]
+    public ActionResult UpdateTrainee(Trainee detailsTrainee)
+    {
+      var traineesearch = _context.Users.OfType<Trainee>().FirstOrDefault(t => t.Id == detailsTrainee.Id);
+      traineesearch.UserName = detailsTrainee.UserName;
+      traineesearch.Age = detailsTrainee.Age;
+      traineesearch.DateofBirth = detailsTrainee.DateofBirth;
+      traineesearch.Education = detailsTrainee.Education;
+      traineesearch.MainProgrammingLang = detailsTrainee.MainProgrammingLang;
+      traineesearch.ToeicScore = detailsTrainee.ToeicScore;
+      traineesearch.ExpDetail = detailsTrainee.ExpDetail;
+      traineesearch.Department = detailsTrainee.Department;
+      traineesearch.Location = detailsTrainee.Location;
+      _context.SaveChanges();
+      return RedirectToAction("TraineeManagement");
+    }
+    public ActionResult DetailsTrainee(string id)
+    {
+      var trainee = _context.Users.SingleOrDefault(t => t.Id == id);
+      return View(trainee);
+    }
+
   }
 }

@@ -276,6 +276,8 @@
     <Content Include="Views\Trainee\Index.cshtml" />
     <Content Include="Views\Staff\Index.cshtml" />
     <Content Include="Views\Staff\TraineeManagement.cshtml" />
+    <Content Include="Views\Staff\UpdateTrainee.cshtml" />
+    <Content Include="Views\Staff\DetailsTrainee.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
