@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -26,8 +27,10 @@ namespace FPTSystem.Controllers
 
     public ActionResult Index()
         {
-            return View();
-        }
+      var staff = User.Identity.GetUserId();
+      var viewstaff = _context.Users.OfType<Staff>().SingleOrDefault(t => t.Id == staff);
+      return View(viewstaff);
+    }
     public ActionResult TraineeManagement(string searchString)
     {
 
@@ -138,6 +141,29 @@ namespace FPTSystem.Controllers
     {
       var trainer = _context.Users.SingleOrDefault(t => t.Id == id);
       return View(trainer);
+    }
+    public ActionResult CourseManagement(string searchString)
+    {
+      var courses = _context.Courses.Include(t => t.Category).ToList();
+      if (!String.IsNullOrWhiteSpace(searchString))
+      {
+        courses = _context.Courses
+        .Where(t => t.CourseName.Contains(searchString))
+        .Include(t => t.Category)
+        .ToList();
+      }
+      return View(courses);
+    }
+    public ActionResult CategoryView(string searchString)
+    {
+      var categories = _context.Categories.ToList();
+      if (!String.IsNullOrWhiteSpace(searchString))
+      {
+        categories = _context.Categories
+       .Where(t => t.CategoryName.Contains(searchString))
+       .ToList();
+      }
+      return View(categories);
     }
 
   }

@@ -34,9 +34,10 @@
 									}
 									if (User.IsInRole("staff"))
 									{
-
-										<li>@Html.ActionLink("Trainee Management", "TraineeManagement", "Staff")</li>
 										<li>@Html.ActionLink("Trainer", "TrainerManagement", "Staff")</li>
+										<li>@Html.ActionLink("Trainee", "TraineeManagement", "Staff")</li>
+										<li>@Html.ActionLink("Course", "CourseManagement", "Staff")</li>
+
 
 
 									}
