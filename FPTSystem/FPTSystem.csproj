@@ -284,6 +284,7 @@
     <Content Include="Views\Staff\DetailsTrainer.cshtml" />
     <Content Include="Views\Staff\CourseManagement.cshtml" />
     <Content Include="Views\Staff\CategoryView.cshtml" />
+    <Content Include="Views\Staff\CreateCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -45,6 +45,7 @@ namespace FPTSystem.Controllers
       _context.SaveChanges();
       return RedirectToAction("");
     }
+    [HttpGet]
     public ActionResult UpdateStaff(string id)
     {
       var staff = _context.Users
@@ -67,6 +68,7 @@ namespace FPTSystem.Controllers
       _context.SaveChanges();
       return RedirectToAction("Index", "Admin");
     }
+    [HttpGet]
     public ActionResult UpdateTrainer(string id)
     {
       var trainer = _context.Users.OfType<Trainer>().SingleOrDefault(t => t.Id == id);

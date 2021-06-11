@@ -31,6 +31,8 @@ namespace FPTSystem.Controllers
       var viewstaff = _context.Users.OfType<Staff>().SingleOrDefault(t => t.Id == staff);
       return View(viewstaff);
     }
+
+   //trainee manage
     public ActionResult TraineeManagement(string searchString)
     {
 
@@ -94,6 +96,7 @@ namespace FPTSystem.Controllers
       var trainee = _context.Users.SingleOrDefault(t => t.Id == id);
       return View(trainee);
     }
+    //trainer manage
     public ActionResult TrainerManagement(string searchString)
     {
 
@@ -142,6 +145,7 @@ namespace FPTSystem.Controllers
       var trainer = _context.Users.SingleOrDefault(t => t.Id == id);
       return View(trainer);
     }
+    //course manage
     public ActionResult CourseManagement(string searchString)
     {
       var courses = _context.Courses.Include(t => t.Category).ToList();
@@ -164,6 +168,26 @@ namespace FPTSystem.Controllers
        .ToList();
       }
       return View(categories);
+    }
+    [HttpGet]
+    public ActionResult CreateCategory()
+    {
+      return View();
+    }
+    [HttpPost]
+    public ActionResult CreateCategory(Category category)
+    {
+      var create_category = new Category() { CategoryName = category.CategoryName };
+      _context.Categories.Add(create_category);
+      _context.SaveChanges();
+      return RedirectToAction("CategoryView");
+    }
+    public ActionResult DeleteCategory(int id)
+    {
+      var removeCategory = _context.Categories.SingleOrDefault(t => t.Id == id);
+      _context.Categories.Remove(removeCategory);
+      _context.SaveChanges();
+      return RedirectToAction("CategoryView");
     }
 
   }
