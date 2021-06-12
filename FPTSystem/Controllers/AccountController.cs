@@ -159,7 +159,7 @@ namespace FPTSystem.Controllers
       {
         if (model.RoleName == "Staff")
         {
-          var user = new Staff() { UserName = model.Email, Email = model.Email };
+          var user = new Staff() { UserName = model.Email, Email = model.Email, Name = model.Name };
           var result = await UserManager.CreateAsync(user, model.Password);
           if (result.Succeeded)
           {
@@ -178,7 +178,7 @@ namespace FPTSystem.Controllers
         }
         if (model.RoleName == "Trainer")
         {
-          var user = new Trainer() { UserName = model.Email, Email = model.Email };
+          var user = new Trainer() { UserName = model.Email, Email = model.Email, Name = model.Name };
           var result = await UserManager.CreateAsync(user, model.Password);
           if (result.Succeeded)
           {
@@ -202,6 +202,7 @@ namespace FPTSystem.Controllers
         var user = new Trainee()
         {
           UserName = model.Email,
+          Name = model.Name,
           Email = model.Email,
           Age = model.Trainee.Age,
           DateofBirth = model.Trainee.DateofBirth,

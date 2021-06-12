@@ -56,6 +56,7 @@ namespace FPTSystem.Controllers
         Id = staff.Id,
         Email = staff.Email,
         UserName = staff.UserName,
+        Name = staff.Name,
 
       };
       return View(updateStaff);
@@ -77,6 +78,7 @@ namespace FPTSystem.Controllers
         Id = trainer.Id,
         Email = trainer.Email,
         UserName = trainer.UserName,
+        Name = trainer.Name,
         Education = trainer.Education,
         WorkPlace = trainer.WorkPlace,
         Telephone = trainer.Telephone,
@@ -89,6 +91,7 @@ namespace FPTSystem.Controllers
     {
       var trainer = _context.Users.OfType<Trainer>().SingleOrDefault(t => t.Id == detailsTrainer.Id);
       trainer.UserName = detailsTrainer.UserName;
+      trainer.Name = detailsTrainer.Name;
       trainer.Education = detailsTrainer.Education;
       trainer.WorkPlace = detailsTrainer.WorkPlace;
       trainer.Telephone = detailsTrainer.Telephone;

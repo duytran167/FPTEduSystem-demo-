@@ -53,6 +53,7 @@ namespace FPTSystem.Models
         [EmailAddress]
         public string Email { get; set; }
 
+
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
@@ -79,6 +80,7 @@ namespace FPTSystem.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+    public string Name { get; set; }
     public Trainee Trainee { get; set; }
     public Trainer Trainer { get; set; }
     public string RoleName { get; set; }

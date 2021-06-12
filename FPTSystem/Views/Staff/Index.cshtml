@@ -7,7 +7,11 @@
 <div class="panel panel-default">
 	<div class="panel-heading">
 		@Html.Label("Name: ")
-		<h3 class="panel-title">@Model.UserName</h3>
+		<h3 class="panel-title">@Model.Name</h3>
+	</div>
+	<div class="panel-body">
+		@Html.Label("UserName: ")
+		@Model.UserName
 	</div>
 	<div class="panel-body">
 		@Html.Label("Id: ")

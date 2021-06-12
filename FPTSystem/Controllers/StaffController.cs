@@ -63,6 +63,7 @@ namespace FPTSystem.Controllers
         Id = trainee.Id,
         Email = trainee.Email,
         UserName = trainee.UserName,
+        Name = trainee.Name,
         Age = trainee.Age,
         DateofBirth = trainee.DateofBirth,
         Education = trainee.Education,
@@ -81,6 +82,7 @@ namespace FPTSystem.Controllers
       var traineesearch = _context.Users.OfType<Trainee>().FirstOrDefault(t => t.Id == detailsTrainee.Id);
       traineesearch.UserName = detailsTrainee.UserName;
       traineesearch.Age = detailsTrainee.Age;
+      traineesearch.Name = detailsTrainee.Name;
       traineesearch.DateofBirth = detailsTrainee.DateofBirth;
       traineesearch.Education = detailsTrainee.Education;
       traineesearch.MainProgrammingLang = detailsTrainee.MainProgrammingLang;

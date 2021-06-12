@@ -22,7 +22,7 @@
 	<thead>
 		<tr>
 			<th scope="col">Id</th>
-			<th scope="col">User Name</th>
+			<th scope="col">User Name</th>	
 			<th scope="col">Email</th>
 			<th scope="col">Action</th>
 		</tr>
@@ -30,19 +30,19 @@
 	<tbody>
 		@foreach (var item in Model)
 		{
-			<tr>
-				<td>@item.Id</td>
-				<td>@item.UserName</td>
-				<td>@item.Email</td>
-				<td>
-					@Html.ActionLink("Update", "UpdateTrainer", "Staff",
-											new { id = item.Id },
-											new { @class = "btn btn-success" })
-					@Html.ActionLink("Detail", "DetailsTrainer", "Staff",
-											new { id = item.Id },
-											new { @class = "btn btn-info" })
-				</td>
-			</tr>
+		<tr>
+			<td>@item.Id</td>
+			<td>@item.UserName</td>
+			<td>@item.Email</td>
+			<td>
+				@Html.ActionLink("Update", "UpdateTrainer", "Staff",
+										new { id = item.Id },
+										new { @class = "btn btn-success" })
+				@Html.ActionLink("Detail", "DetailsTrainer", "Staff",
+										new { id = item.Id },
+										new { @class = "btn btn-info" })
+			</td>
+		</tr>
 		}
 	</tbody>
 </table>
