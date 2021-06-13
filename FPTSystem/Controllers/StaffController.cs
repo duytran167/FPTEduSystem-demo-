@@ -160,6 +160,66 @@ namespace FPTSystem.Controllers
       }
       return View(courses);
     }
+    [HttpGet]
+    public ActionResult CreateCourse()
+    {
+      var courseCategory = new ViewModel.CategoryCourseViewModel()
+      {
+        Categories = _context.Categories.ToList(),
+      };
+      return View(courseCategory);
+    }
+    [HttpPost]
+    public ActionResult CreateCourse(ViewModel.CategoryCourseViewModel categoryCourseModel)
+    {
+      var new_course = new Course()
+      {
+        CourseName = categoryCourseModel.Course.CourseName,
+        Detail = categoryCourseModel.Course.Detail,
+        CategoryID = categoryCourseModel.Id
+      };
+      _context.Courses.Add(new_course);
+      _context.SaveChanges();
+      return RedirectToAction("CourseManagement");
+    }
+
+    public ActionResult DeleteCourse(int id)
+    {
+      var removeCourse = _context.Courses.SingleOrDefault(t => t.Id == id);
+      _context.Courses.Remove(removeCourse);
+      _context.SaveChanges();
+      return RedirectToAction("CourseManagement");
+    } 
+
+    public ActionResult EditCourse(int id)
+    {
+      var fcourse = _context.Courses.SingleOrDefault(t => t.Id == id);
+      var dcourse = new ViewModel.CategoryCourseViewModel()
+      {
+        Id = id,
+        Course = fcourse,
+        Categories = _context.Categories.ToList()
+      };
+      return View(dcourse);
+    }
+    [HttpPost]
+    public ActionResult EditCourse(ViewModel.CategoryCourseViewModel viewModel)
+    {
+      var course = _context.Courses.SingleOrDefault(t => t.Id == viewModel.Id);
+      course.CourseName = viewModel.Course.CourseName;
+      course.CategoryID = viewModel.Course.CategoryID;
+      course.Detail = viewModel.Course.Detail;
+      _context.SaveChanges();
+      return RedirectToAction("CourseManagement", "Staff");
+    }
+    public ActionResult DetailCourse(int id)
+    {
+      var course = new ViewModel.CategoryCourseViewModel();
+      course.Id = id;
+      course.Course = _context.Courses.Include(t => t.Category).SingleOrDefault(t => t.Id == id);
+      return View(course);
+    }
+    //manage category
     public ActionResult CategoryView(string searchString)
     {
       var categories = _context.Categories.ToList();

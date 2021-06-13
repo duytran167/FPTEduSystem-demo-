@@ -220,7 +220,6 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Category.cs" />
-    <Compile Include="Models\CategoryCourseViewModel.cs" />
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -309,6 +308,9 @@
     <Content Include="Views\Staff\CourseManagement.cshtml" />
     <Content Include="Views\Staff\CategoryView.cshtml" />
     <Content Include="Views\Staff\CreateCategory.cshtml" />
+    <Content Include="Views\Staff\CreateCourse.cshtml" />
+    <Content Include="Views\Staff\EditCourse.cshtml" />
+    <Content Include="Views\Staff\DetailCourse.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
