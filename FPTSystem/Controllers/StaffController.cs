@@ -32,6 +32,7 @@ namespace FPTSystem.Controllers
       return View(viewstaff);
     }
 
+
    //trainee manage
     public ActionResult TraineeManagement(string searchString)
     {
@@ -250,6 +251,53 @@ namespace FPTSystem.Controllers
       _context.Categories.Remove(removeCategory);
       _context.SaveChanges();
       return RedirectToAction("CategoryView");
+    }
+    // assign trainee and trainer
+    public ActionResult Assign(int id)
+    {
+      var assign = new ViewModel.AssignViewModel()
+      {
+        TraineeCourses = _context.TraineeCourses.Where(t => t.CourseID == id).Include(t => t.Trainee).ToList(),
+        TrainerCourses = _context.TrainerCourses.Where(t => t.CourseId == id).Include(t => t.Trainer).ToList(),
+        Course = _context.Courses.FirstOrDefault(t => t.Id == id)
+      };
+
+      return View(assign);
+    }
+    [HttpGet]
+    public ActionResult AssignTrainee(int id)
+    {
+      var assignModel = new ViewModel.AssignViewModel()
+      {
+        Course = _context.Courses.SingleOrDefault(t => t.Id == id),
+        Trainees = _context.Users.OfType<Trainee>().ToList(),
+      };
+
+      return View(assignModel);
+    }
+    [HttpPost]
+    public ActionResult AssignTrainee(ViewModel.AssignViewModel model)
+    {
+      var traineeCourse = new TraineeCourse()
+      {
+        TraineeID = model.TraineeId,
+        CourseID = model.Course.Id,
+      };
+      if (_context.TraineeCourses.Any(t => t.CourseID == model.Course.Id && t.TraineeID == model.TraineeId))
+      {
+        ModelState.AddModelError("Validation", "Existed before");
+        return View(model);
+      }
+      _context.TraineeCourses.Add(traineeCourse);
+      _context.SaveChanges();
+      return RedirectToAction("Assign", "Staff", new { @id = model.Course.Id });
+    }
+    public ActionResult RemoveTrainee(int id)
+    {
+      var traineeCourse = _context.TraineeCourses.SingleOrDefault(t => t.Id == id);
+      _context.TraineeCourses.Remove(traineeCourse);
+      _context.SaveChanges();
+      return RedirectToAction("Assign", "Staff", new { @id = traineeCourse.CourseID });
     }
 
   }

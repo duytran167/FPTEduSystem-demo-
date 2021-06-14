@@ -230,6 +230,7 @@
     <Compile Include="Models\TrainerCourse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModel\AssignViewModel.cs" />
     <Compile Include="ViewModel\CategoryCourseViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -311,6 +312,10 @@
     <Content Include="Views\Staff\CreateCourse.cshtml" />
     <Content Include="Views\Staff\EditCourse.cshtml" />
     <Content Include="Views\Staff\DetailCourse.cshtml" />
+    <Content Include="Views\Staff\Assign.cshtml" />
+    <Content Include="Views\Staff\AssignTrainee.cshtml" />
+    <Content Include="Views\Trainee\AllCourse.cshtml" />
+    <Content Include="Views\Trainee\CourseAssign.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

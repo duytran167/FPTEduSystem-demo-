@@ -66,6 +66,7 @@ namespace FPTSystem.Controllers
     {
       var staffID = _context.Users.OfType<Staff>().FirstOrDefault(t => t.Id == detailStaff.Id);
       staffID.UserName = detailStaff.UserName;
+      staffID.Name = detailStaff.Name;
       _context.SaveChanges();
       return RedirectToAction("Index", "Admin");
     }
