@@ -299,6 +299,42 @@ namespace FPTSystem.Controllers
       _context.SaveChanges();
       return RedirectToAction("Assign", "Staff", new { @id = traineeCourse.CourseID });
     }
+    //assign trainer
+    [HttpGet]
+    public ActionResult AssignTrainer(int id)
+    {
+      var assignModel = new ViewModel.AssignViewModel()
+      {
+        Course = _context.Courses.SingleOrDefault(t => t.Id == id),
+        Trainers = _context.Users.OfType<Trainer>().ToList(),
+      };
+
+      return View(assignModel);
+    }
+    [HttpPost]
+    public ActionResult AssignTrainer(ViewModel.AssignViewModel model)
+    {
+      var trainerCourse = new TrainerCourse()
+      {
+        TrainerId = model.TrainerId,
+        CourseId = model.Course.Id,
+      };
+      if (_context.TrainerCourses.Any(t => t.CourseId == model.Course.Id && t.TrainerId == model.TrainerId))
+      {
+        ModelState.AddModelError("Validation", "Existed before");
+        return View(model);
+      }
+      _context.TrainerCourses.Add(trainerCourse);
+      _context.SaveChanges();
+      return RedirectToAction("Assign", "Staff", new { @id = model.Course.Id });
+    }
+    public ActionResult RemoveTrainer(int id)
+    {
+      var trainerCourse = _context.TrainerCourses.SingleOrDefault(t => t.Id == id);
+      _context.TrainerCourses.Remove(trainerCourse);
+      _context.SaveChanges();
+      return RedirectToAction("Assign", "Staff", new { @id = trainerCourse.CourseId });
+    }
 
   }
 }
